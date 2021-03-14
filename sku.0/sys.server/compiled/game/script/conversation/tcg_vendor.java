@@ -1,9 +1,7 @@
 package script.conversation;
 
 import script.*;
-import script.library.ai_lib;
-import script.library.chat;
-import script.library.utils;
+import script.library.*;
 
 import java.util.Objects;
 
@@ -20,7 +18,7 @@ public class tcg_vendor extends script.base_script {
         messageTo(npc, "showInventorySUI", d, 0, false);
     }
 
-    public int OnInitialize(obj_id self) throws InterruptedException {
+    public int OnInitialize(obj_id self) {
         if ((!isTangible(self)) || (isPlayer(self))) {
             detachScript(self, "conversation.tcg_vendor");
         }
@@ -30,14 +28,14 @@ public class tcg_vendor extends script.base_script {
         return SCRIPT_CONTINUE;
     }
 
-    public int OnAttach(obj_id self) throws InterruptedException {
+    public int OnAttach(obj_id self) {
         if (configSetting) {
             setCondition(self, CONDITION_CONVERSABLE);
         }
         return SCRIPT_CONTINUE;
     }
 
-    public int OnObjectMenuRequest(obj_id self, obj_id player, menu_info menuInfo) throws InterruptedException {
+    public int OnObjectMenuRequest(obj_id self, obj_id player, menu_info menuInfo) {
         if (!hasCondition(self, CONDITION_CONVERSABLE)) {
             return SCRIPT_OVERRIDE;
         }
@@ -48,13 +46,13 @@ public class tcg_vendor extends script.base_script {
         return SCRIPT_CONTINUE;
     }
 
-    public int OnIncapacitated(obj_id self, obj_id killer) throws InterruptedException {
+    public int OnIncapacitated(obj_id self, obj_id killer) {
         clearCondition(self, CONDITION_CONVERSABLE);
         detachScript(self, "conversation.tcg_vendor");
         return SCRIPT_CONTINUE;
     }
 
-    public boolean npcStartConversation(obj_id player, obj_id npc, String convoName, string_id greetingId, prose_package greetingProse, string_id[] responses) throws InterruptedException {
+    public boolean npcStartConversation(obj_id player, obj_id npc, String convoName, string_id greetingId, prose_package greetingProse, string_id[] responses) {
         Object[] objects = new Object[responses.length];
         System.arraycopy(responses, 0, objects, 0, responses.length);
         return npcStartConversation(player, npc, convoName, greetingId, greetingProse, objects);
